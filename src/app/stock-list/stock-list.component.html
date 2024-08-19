@@ -1,0 +1,7 @@
+<div class="component-wrapper">
+    <div class="container">
+        @for (stock of stockList; track $index) {
+            <app-list-item [data]="stock" [id]="$index" ></app-list-item>
+        }
+    </div>
+</div>

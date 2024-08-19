@@ -1,0 +1,55 @@
+@import "../var.scss";
+
+    .container {
+        margin-left: 0 !important;
+    }
+
+    .top {
+        height: 80px;
+        @include center();
+        justify-content: space-between;
+        font-size: 35px;
+        width: calc(100% - 40px);
+        margin-left: 20px;
+
+        .left-top {
+            width: 50%;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .right-top {
+            font-size: 15px;
+            font-weight: 200;
+            width: 50%;
+            gap: 10px;
+            display: flex;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: 100;
+        }
+    }
+
+    input {
+        background-color: grey;
+        border: none;
+        height: 20px;
+        width: 125px;
+        margin: 10px;
+        padding: 5px;
+        border-radius: 5px;
+
+    }
+
+    .diagramm-container {
+        width: 100%;
+        height: calc(100% - 80px);
+    }
+
+    .favorite {
+        background-color: rgb(26, 188, 156);
+    }
+
+

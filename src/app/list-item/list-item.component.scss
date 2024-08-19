@@ -1,0 +1,40 @@
+
+.list-element {
+    margin: 20px;
+    background: rgb(0, 0, 0);
+    height: 90px;
+    border-radius: 15px;
+    display: flex;
+    &:hover {
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.654);
+    }
+}
+
+.left-box {
+    box-sizing: border-box;
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 50%;
+}
+
+.right-box { 
+    @extend .left-box;   
+    margin-left: 0;
+    margin-right: 15px;
+    align-items: flex-end;
+}
+
+.high {
+    color: rgb(45, 170, 131);
+}
+
+
+.low {
+    color: rgb(208, 41, 41);
+}
+
+

@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+@import "app/var.scss";
+
+* {
+    transition: all 200ms ease-in-out;
+    text-wrap: pretty;
+    color: white;
+    font-family: sans-serif;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+}

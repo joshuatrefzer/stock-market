@@ -1,0 +1,31 @@
+@import "var.scss";
+
+.wrapper {
+    width: 100%;
+    height: 100dvh;
+    background: linear-gradient(rgb(95, 95, 95) , $bg-black);
+}
+
+.top-area {
+    height: $top-area-height;
+    @include center();
+}
+
+.main-area {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+app-stock-list {
+    height: 100%;
+    width: 25%;
+}
+
+app-dashboard {
+    height: 100%;
+    width: 75%;
+}
+
+
+

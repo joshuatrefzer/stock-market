@@ -1,0 +1,21 @@
+<div class="component-wrapper">
+    <div class="container">
+
+        <div class="top">
+            <div class="left-top">
+                <span><b>{{ mainService.stockTicker().T }}</b></span>
+                <span class="price" >{{ mainService.stockTicker().vw }} USD</span>
+                <button [ngClass]="{'favorite': mainService.favorite?.T == mainService.stockTicker().T}" (click)="addToFavorite()" >My Favorite</button>
+            </div>
+            <div class="right-top">
+                <span>Show interval from <input value="{{getCurrentMonth()}}" type="month"> to <input value="{{getCurrentMonth()}}" type="month"><button>GO</button></span>
+            </div>
+        </div>
+
+        <div class="diagramm-container">
+            <app-diagramm [data]="mainService.stockTicker()"></app-diagramm>
+        </div>
+
+    </div>
+
+</div>
