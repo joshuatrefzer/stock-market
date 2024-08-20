@@ -1,5 +1,6 @@
 <div class="component-wrapper">
     <div class="container">
+        <app-loarder *ngIf="loader"></app-loarder>
         @for (stock of stockList; track $index) {
             <app-list-item [data]="stock" [id]="$index" ></app-list-item>
         }

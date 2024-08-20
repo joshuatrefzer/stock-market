@@ -17,30 +17,30 @@ import { DiagrammCompareComponent } from '../diagramm-compare/diagramm-compare.c
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
-  apiKey:string = "cCmj4SGd5ZtIDY3keypVXUVCwrRyLN3T";
-  startDate:string = "";
-  endDate:string = "";
-  maxEndDate:string;
-  maxStartDate:string;
-  
+  apiKey: string = "cCmj4SGd5ZtIDY3keypVXUVCwrRyLN3T";
+  startDate: string = "";
+  endDate: string = "";
+  maxEndDate: string;
+  maxStartDate: string;
 
-  constructor(public mainService:MainService, private http:HttpClient){
+
+  constructor(public mainService: MainService, private http: HttpClient) {
     // set limits for date- inputs, to get only valid data
     const today = new Date();
     const year = today.getFullYear();
 
-    const monthEnd = today.getMonth() + 1; 
-    this.maxEndDate = `${year}-${monthEnd.toString().padStart(2, '0')}`; 
-    
+    const monthEnd = today.getMonth() + 1;
+    this.maxEndDate = `${year}-${monthEnd.toString().padStart(2, '0')}`;
+
     const monthStart = today.getMonth();
     this.maxStartDate = `${year}-${monthStart.toString().padStart(2, '0')}`;
-  } 
+  }
 
 
 
   addToFavorite() {
     const ticker = this.mainService.stockTicker();
-  
+
     if (this.mainService.favorite === ticker) {
       this.mainService.favorite = undefined;
       localStorage.removeItem('stockTicker');
@@ -53,56 +53,60 @@ export class DashboardComponent {
   updateChart() {
     if (!this.isDateRangeValid()) {
       alert("Please select a valid date interval");
-      ////// FUNKTION -> STARTDATUM DARF NICHT NACH ENDDATUM SEIN!!
       return;
-  }
+    }
     if (this.mainService.stockToCompare() && this.mainService.compairison) {
       this.getStockData();
-      this.getStockDataToCompare();  
+      this.getStockDataToCompare();
     }
     this.getStockData();
   }
 
   isDateRangeValid(): boolean {
     if (!this.startDate || !this.endDate) {
-        return false; 
-    } else {
-      return true;
+      return false; 
     }
-}
+    const start = new Date(this.startDate + "-01");
+    const end = new Date(this.endDate + "-01");
 
-getStockDataToCompare(){
-  const T = this.mainService.stockToCompare()?.T;
-  if (!T) return;
-  const url = `https://api.polygon.io/v2/aggs/ticker/${T}/range/1/month/${this.startDate}-01/${this.endDate}-01?adjusted=true&sort=asc&apiKey=${this.apiKey}`;
+    if (start > end) {
+      return false;
+    }
+    return true; 
+  }
+
+  getStockDataToCompare() {
+    const T = this.mainService.stockToCompare()?.T;
+    if (!T) return;
+    const url = `https://api.polygon.io/v2/aggs/ticker/${T}/range/1/month/${this.startDate}-01/${this.endDate}-01?adjusted=true&sort=asc&apiKey=${this.apiKey}`;
     this.http.get<ApiResponse>(url).pipe(take(1)).subscribe(
-     {
-      next: (response:ApiResponse) => {
-        this.mainService.stockDataTimeIntervalForCompairison = response.results;
-        console.log(response.results);
-        
-      },
-      error: (e) => {
-        
+      {
+        next: (response: ApiResponse) => {
+          this.mainService.stockDataTimeIntervalForCompairison = response.results;
+          console.log(response.results);
+
+        },
+        error: (e) => {
+
+        }
       }
-     } 
     );
-}
+  }
 
 
-  getStockData(){
+  getStockData() {
     const url = `https://api.polygon.io/v2/aggs/ticker/${this.mainService.stockTicker().T}/range/1/month/${this.startDate}-01/${this.endDate}-01?adjusted=true&sort=asc&apiKey=${this.apiKey}`;
     this.http.get<ApiResponse>(url).pipe(take(1)).subscribe(
-     {
-      next: (response:ApiResponse) => {
-        this.mainService.stockDataTimeInterval = response.results;
-        console.log(response.results);
-        
-      },
-      error: (e) => {
-        
+      {
+        next: (response: ApiResponse) => {
+          this.mainService.stockDataTimeInterval = response.results;
+          console.log(response.results);
+
+        },
+        error: (e) => {
+
+        }
       }
-     } 
     );
   }
 
@@ -118,8 +122,8 @@ getStockDataToCompare(){
     }
   }
 
-  exitCompairison(){
-    this.mainService.compairison = false; 
+  exitCompairison() {
+    this.mainService.compairison = false;
     this.mainService.stockToCompare.set(undefined);
     this.mainService.stockDataTimeIntervalForCompairison = undefined;
   }

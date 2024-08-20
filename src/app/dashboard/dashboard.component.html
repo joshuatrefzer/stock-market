@@ -4,7 +4,7 @@
         <div class="top">
             <div class="left-top">
                 @if(!mainService.compairison){
-                <span><b>{{ mainService.stockTicker().T }}</b></span>
+                <span class="ticker"><b>{{ mainService.stockTicker().T }}</b></span>
                 <span class="price">{{ mainService.stockTicker().vw }} USD</span>
                 <button [ngClass]="{'favorite': mainService.favorite?.T == mainService.stockTicker().T}"
                     (click)="addToFavorite()">My Favorite</button>

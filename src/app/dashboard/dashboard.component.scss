@@ -5,6 +5,10 @@
         position: relative;
     }
 
+    .ticker {
+        width: 120px;
+    }
+
     .top {
         height: 120px;
         @include center();
@@ -16,7 +20,7 @@
         .left-top {
             width: 50%;
             display: flex;
-            gap: 20px;
+            gap: 5px;
             align-items: center;
         }
         .right-top {
@@ -30,6 +34,7 @@
         .price {
             font-size: 20px;
             font-weight: 100;
+            width: 150px;
         }
     }
 
