@@ -7,14 +7,13 @@ import { CommonModule } from '@angular/common';
 Chart.register(...registerables, LinearScale);
 
 @Component({
-  selector: 'app-diagramm',
+  selector: 'app-diagramm-compare',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './diagramm.component.html',
-  styleUrl: './diagramm.component.scss'
+  templateUrl: './diagramm-compare.component.html',
+  styleUrl: './diagramm-compare.component.scss'
 })
-
-export class DiagrammComponent implements OnChanges {
+export class DiagrammCompareComponent implements OnChanges {
   @Input() data: StockData | undefined;
   @Input() timeInterval: StockData[] | undefined;
   @Input() idExtention: string = "";
@@ -38,7 +37,7 @@ export class DiagrammComponent implements OnChanges {
 
 
     if (this.data) {
-      const ctx = document.getElementById(`lineChart${this.idExtention}`) as HTMLCanvasElement;
+      const ctx = document.getElementById(`lineChartCompare`) as HTMLCanvasElement;
       if (ctx) {
         this.chart = new Chart(ctx, {
           type: 'line',
@@ -110,14 +109,14 @@ export class DiagrammComponent implements OnChanges {
 
   buildCustomChart() {
     if (this.timeInterval) {
-      const ctx = document.getElementById(`lineChart${this.idExtention}`) as HTMLCanvasElement;
+      const ctx = document.getElementById(`lineChartCompare`) as HTMLCanvasElement;
       if (ctx) {
         this.chart = new Chart(ctx, {
           type: 'line',
           data: {
             labels: this.getMonths(),
             datasets: [{
-              label: `${this.mainService.stockTicker().T} Price`,
+              label: `${this.mainService.stockToCompare()?.T} Price`,
               data: this.getXAxisInformation(),
               fill: false,
               borderColor: `rgba(${this.checkForColor(this.timeInterval[0].vw, this.timeInterval[this.timeInterval.length - 1].vw)})`,
@@ -173,7 +172,6 @@ export class DiagrammComponent implements OnChanges {
 
     return date.toLocaleDateString('en-US', options);
   }
-
 
 
 }

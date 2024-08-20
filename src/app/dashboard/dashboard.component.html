@@ -3,19 +3,63 @@
 
         <div class="top">
             <div class="left-top">
+                @if(!mainService.compairison){
                 <span><b>{{ mainService.stockTicker().T }}</b></span>
-                <span class="price" >{{ mainService.stockTicker().vw }} USD</span>
-                <button [ngClass]="{'favorite': mainService.favorite?.T == mainService.stockTicker().T}" (click)="addToFavorite()" >My Favorite</button>
+                <span class="price">{{ mainService.stockTicker().vw }} USD</span>
+                <button [ngClass]="{'favorite': mainService.favorite?.T == mainService.stockTicker().T}"
+                    (click)="addToFavorite()">My Favorite</button>
+                }
+
             </div>
             <div class="right-top">
-                <span>Show interval from <input value="{{getCurrentMonth()}}" type="month"> to <input value="{{getCurrentMonth()}}" type="month"><button>GO</button></span>
+                <span>Show interval from <input [max]="maxStartDate" [(ngModel)]="startDate" type="month"> to <input
+                        [max]="maxEndDate" [(ngModel)]="endDate" type="month"><button
+                        (click)="updateChart()">GO</button></span>
             </div>
         </div>
 
         <div class="diagramm-container">
-            <app-diagramm [data]="mainService.stockTicker()"></app-diagramm>
+            <div class="row">
+                <button class="button2" *ngIf="!mainService.compairison"
+                    (click)="mainService.compairison = true;">compair stock</button>
+                <button class="button2" *ngIf="mainService.compairison" (click)="exitCompairison()">exit
+                    compairison</button>
+            </div>
+
+            @if(!mainService.compairison){
+            <div style="margin-left: 20px;" *ngIf="!mainService.stockDataTimeInterval">{{ getDayStatus() }}</div>
+            <app-diagramm *ngIf="!mainService.stockDataTimeInterval" [data]="mainService.stockTicker()"></app-diagramm>
+            <app-diagramm *ngIf="mainService.stockDataTimeInterval"
+                [timeInterval]="mainService.stockDataTimeInterval"></app-diagramm>
+            }
+
+
+            <!-- ++++++++    COMPAIRISON +++++++++++ -->
+            <div class="compairison-container" *ngIf="mainService.compairison && mainService.stockToCompare()">
+                <div class="left-stock">
+                    <app-diagramm *ngIf="!mainService.stockDataTimeInterval"
+                        [data]="mainService.stockTicker()"></app-diagramm>
+                    <app-diagramm *ngIf="mainService.stockDataTimeInterval"
+                        [timeInterval]="mainService.stockDataTimeInterval"></app-diagramm>
+                </div>
+
+                <div class="right-stock">
+                    <app-diagramm-compare *ngIf="!mainService.stockDataTimeIntervalForCompairison"
+                        [data]="mainService.stockToCompare()"></app-diagramm-compare>
+                    <app-diagramm-compare *ngIf="mainService.stockDataTimeIntervalForCompairison"
+                        [timeInterval]="mainService.stockDataTimeIntervalForCompairison"></app-diagramm-compare>
+                </div>
+
+
+            </div>
+
+
         </div>
 
+        <div *ngIf="mainService.compairison && mainService.stockToCompare() == undefined" class="block-container">
+            <div style="font-size: 30px;">Please select a stock to compair with <b>{{ mainService.stockTicker().T }}</b>
+            </div>
+        </div>
     </div>
 
 </div>

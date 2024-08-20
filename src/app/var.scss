@@ -55,7 +55,7 @@ button {
 
 .row {
     width: 100%;
-    @include center($jc:flex-start);
+    @include center();
 }
 
 .blur {

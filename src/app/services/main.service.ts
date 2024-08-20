@@ -21,15 +21,25 @@ export class MainService {
     }
   );
 
+  stockDataTimeInterval: StockData[] | undefined;
+  compairison: boolean = false;
+  
+  stockToCompare: WritableSignal<StockData | undefined> = signal(undefined);
+  stockDataTimeIntervalForCompairison: StockData[] | undefined;
+
+
+
+
   constructor() {
     this.checkForFavorite();
   }
 
   checkForFavorite() {
     const storageData = localStorage.getItem('stockTicker');
-    
     if (storageData) {
-      this.favorite = JSON.parse(storageData);
+      this.stockTicker.set(JSON.parse(storageData))
+      this.favorite = this.stockTicker();
+      
     } else {
       this.favorite = undefined;
     }

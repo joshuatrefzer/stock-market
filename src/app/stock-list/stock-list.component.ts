@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { firstValueFrom, take } from 'rxjs';
 import { ListItemComponent, StockData } from '../list-item/list-item.component';
 
-interface ApiResponse {
+export interface ApiResponse {
   adjusted: boolean;
   count: number;
   queryCount: number;
@@ -11,6 +11,7 @@ interface ApiResponse {
   results: StockData[];
   resultsCount: number;
   status: string;
+  ticker?:string;
 }
 
 @Component({

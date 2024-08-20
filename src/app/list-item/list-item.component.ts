@@ -30,8 +30,17 @@ export class ListItemComponent  {
   constructor(private mainService:MainService){}
 
   updateStock(){
-    if (this.data) {
-      this.mainService.stockTicker.set(this.data);
+    if (this.mainService.compairison && this.mainService.stockToCompare() == undefined) {
+      this.mainService.stockToCompare.set(this.data);
+      console.log('Compare with' , this.mainService.stockToCompare());
+      
+    } else {
+      if (this.mainService.stockDataTimeInterval) {
+        this.mainService.stockDataTimeInterval = undefined;
+      }
+      if (this.data) {
+        this.mainService.stockTicker.set(this.data);
+      }
     }
     
   }

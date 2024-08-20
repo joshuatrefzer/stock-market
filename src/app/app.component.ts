@@ -13,4 +13,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 })
 export class AppComponent {
   title = 'stock-market';
+
+  constructor(){
+    
+  }
+
 }
