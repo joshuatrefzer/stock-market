@@ -1,27 +1,44 @@
 # StockMarket
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.0.
+Welcome to the **StockMarket** repository! This project is a web application that allows you to monitor and analyze stock market data. You can select stocks, visualize their performance on a dashboard, customize the time intervals for displaying data and compare multiple stocks side by side. 
 
-## Development server
+![StockMarket Dashboard](/src/assets/stock-market.png) 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## APIs and Libraries
 
-## Code scaffolding
+### Polygon.io API
+This application relies on the Polygon.io API to fetch stock market data. Ensure that your internet connection is active to enable API requests. You will also need an API key from Polygon.
+You can easily get one on their [homepage](https://polygon.io/docs/stocks/getting-started).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Chart.js
+The application utilizes Chart.js to render responsive and interactive charts that display stock data. Chart.js supports various chart types, which makes it ideal for visualizing stock performance. In this repository only the line chart is used.
 
-## Build
+## Getting Started
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Settings
 
-## Running unit tests
+Before you begin, ensure you have the following installed on your local machine:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- [Node.js](https://nodejs.org/) (version 14.x or higher recommended)
+- [Angular CLI](https://angular.io/cli) (version 17.0.0 or higher)
 
-## Running end-to-end tests
+### Installation
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+1. Clone the repository:
+    ```bash
+    git clone git@github.com:joshuatrefzer/stock-market.git
+    ```
+2. Navigate to the project directory:
+    ```bash
+    cd stock-market
+    ```
+3. Install the dependencies:
+    ```bash
+    npm install
+    ```
 
-## Further help
+### Development Server
+To start the development server, run the following command:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```bash
+ng serve

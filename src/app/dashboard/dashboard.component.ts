@@ -37,10 +37,11 @@ export class DashboardComponent {
   }
 
 
-
+  /**
+   * Adds the Key 'stockTicker' to local storage to save the favorite stock 
+   */
   addToFavorite() {
     const ticker = this.mainService.stockTicker();
-
     if (this.mainService.favorite === ticker) {
       this.mainService.favorite = undefined;
       localStorage.removeItem('stockTicker');
@@ -50,11 +51,17 @@ export class DashboardComponent {
     }
   }
 
+
+  /**
+   * Starts new request to get datta from selected range 
+   * @returns if data is not a valid time interval to show stocks
+   */
   updateChart() {
     if (!this.isDateRangeValid()) {
-      alert("Please select a valid date interval");
+      this.mainService.errorMessage = "Please take a valid time interval";
       return;
     }
+    if (this.mainService.isSameStock()) return;
     if (this.mainService.stockToCompare() && this.mainService.compairison) {
       this.getStockData();
       this.getStockDataToCompare();
@@ -62,9 +69,14 @@ export class DashboardComponent {
     this.getStockData();
   }
 
+
+  /**
+   * 
+   * @returns {boolean} true/false.. if the selected dates are valid for API request. 
+   */
   isDateRangeValid(): boolean {
     if (!this.startDate || !this.endDate) {
-      return false; 
+      return false;
     }
     const start = new Date(this.startDate + "-01");
     const end = new Date(this.endDate + "-01");
@@ -72,9 +84,13 @@ export class DashboardComponent {
     if (start > end) {
       return false;
     }
-    return true; 
+    return true;
   }
 
+  /**
+   * GET request to get data for compairison with pre-selected stock (with selected range by user)
+   * @returns if the variable "T" ( stock's name/symbol ) is not set. Providing errors because of invalid url.
+   */
   getStockDataToCompare() {
     const T = this.mainService.stockToCompare()?.T;
     if (!T) return;
@@ -83,33 +99,36 @@ export class DashboardComponent {
       {
         next: (response: ApiResponse) => {
           this.mainService.stockDataTimeIntervalForCompairison = response.results;
-          console.log(response.results);
-
         },
         error: (e) => {
-
+          this.mainService.errorMessage = "Something went wrong by fetching stock data from API. Please wait a few seconds and try again (API handles 5 requests per minute only)";
         }
       }
     );
   }
 
-
+  /**
+   * GET request to get data with selected range 
+   */
   getStockData() {
     const url = `https://api.polygon.io/v2/aggs/ticker/${this.mainService.stockTicker().T}/range/1/month/${this.startDate}-01/${this.endDate}-01?adjusted=true&sort=asc&apiKey=${this.apiKey}`;
     this.http.get<ApiResponse>(url).pipe(take(1)).subscribe(
       {
         next: (response: ApiResponse) => {
           this.mainService.stockDataTimeInterval = response.results;
-          console.log(response.results);
-
         },
         error: (e) => {
-
+          this.mainService.errorMessage = "Something went wrong by fetching stock data from API. Please wait a few seconds and try again (API handles 5 requests per minute only)";
         }
       }
     );
   }
 
+  /**
+   * 
+   * @returns status of the day. If it's after 22:30, the US stock-market is closed and API shows data from current day. 
+   * If not, it shows data from yesterday. 
+   */
   getDayStatus(): string {
     const now = new Date();
     const cutoffHour = 22;
@@ -122,6 +141,9 @@ export class DashboardComponent {
     }
   }
 
+  /**
+   * Sets variables back, and exits the compairison-view
+   */
   exitCompairison() {
     this.mainService.compairison = false;
     this.mainService.stockToCompare.set(undefined);

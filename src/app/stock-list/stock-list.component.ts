@@ -4,6 +4,7 @@ import { firstValueFrom, take } from 'rxjs';
 import { ListItemComponent, StockData } from '../list-item/list-item.component';
 import { LoarderComponent } from '../loarder/loarder.component';
 import { CommonModule } from '@angular/common';
+import { MainService } from '../services/main.service';
 
 export interface ApiResponse {
   adjusted: boolean;
@@ -30,11 +31,13 @@ export class StockListComponent {
   stockList: StockData[]  | undefined;
   loader:boolean = false;
 
-
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private mainService: MainService) {
     this.fetchUsStockList();
   }
 
+  /**
+   * GET - request: fetch stocks with simple, daily data 
+   */
   fetchUsStockList() {
     this.loader = true;
     this.http.get<ApiResponse>(this.apiUrl).pipe(take(1)).subscribe(
@@ -42,17 +45,13 @@ export class StockListComponent {
         next: (data:ApiResponse) => {
           let response = data; 
           this.stockList = response['results'];
-          console.log('my stock List', this.stockList);
-          this.loader = false;
-          
+          this.loader = false;          
         },
-
         error: error => {
-          alert('Error by loading data from backend');
+          this.mainService.errorMessage = "Something went wrong by fetching stock data from API. Please wait a few seconds and try again (API handles 5 requests per minute only)";
         }
       }
     );
-
   }
 
 

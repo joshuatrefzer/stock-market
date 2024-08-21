@@ -27,25 +27,32 @@ export class DiagrammComponent implements OnChanges {
     this.createLineChart();
   }
 
+  /**
+   * Triggers functions to build linechart. 
+   * Destroys chart, to avoid id- issues
+   */
   createLineChart(): void {
-    if (this.chart) {
-      this.chart.destroy();
-    }
-
-    if (this.timeInterval) {
-      this.buildCustomChart();
-    }
+    if (this.chart) this.chart.destroy();
+    if (this.timeInterval) this.buildCustomChart();
+    this.setDataForChart();
+  }
 
 
-    if (this.data) {
-      const ctx = document.getElementById(`lineChart${this.idExtention}`) as HTMLCanvasElement;
+  /**
+   * 
+   * @returns if data is invalid for building chart. 
+   * Sets data for construct chart.
+   */
+  setDataForChart(){
+    if (!this.data) return;
+    const ctx = document.getElementById(`lineChart${this.idExtention}`) as HTMLCanvasElement;
       if (ctx) {
         this.chart = new Chart(ctx, {
           type: 'line',
           data: {
             labels: ['opening', 'average', 'close'],
             datasets: [{
-              label: `${this.data.T} Price`,
+              label: `${this.data?.T} Price`,
               data: [this.data.o, this.data.vw, this.data.c],
               fill: false,
               borderColor: `rgba(${this.checkForColor(this.data.o, this.data.c)})`,
@@ -57,11 +64,12 @@ export class DiagrammComponent implements OnChanges {
           options: this.setOptions()
         });
       }
-    }
   }
 
-
-
+  /**
+   * 
+   * @returns options (like styling f.e.) for chart-build
+   */
   setOptions() {
     return {
       responsive: true,
@@ -106,8 +114,9 @@ export class DiagrammComponent implements OnChanges {
     }
   }
 
-
-
+  /**
+   * collects infomations / configuratons for chart
+   */
   buildCustomChart() {
     if (this.timeInterval) {
       const ctx = document.getElementById(`lineChart${this.idExtention}`) as HTMLCanvasElement;
@@ -132,6 +141,10 @@ export class DiagrammComponent implements OnChanges {
     }
   }
 
+  /**
+   * 
+   * @returns {String[]} array with name of months 
+   */
   getMonths() {
     let labels: string[] = [];
     this.timeInterval?.forEach(monthlyData => {
@@ -141,20 +154,25 @@ export class DiagrammComponent implements OnChanges {
     return labels;
   }
 
-
+  /**
+   * 
+   * @returns stock's average- values from months 
+   */
   getXAxisInformation() {
     let averageValues: number[] = [];
     this.timeInterval?.forEach(monthlyData => {
       const averageValue = monthlyData.vw;
       averageValues.push(averageValue);
     })
-
     return averageValues;
-
-
   }
 
-
+  /**
+   * 
+   * @param start start-value of diagramm
+   * @param end endvalue of diagramm
+   * @returns green or red, if stock is successful or not
+   */
   checkForColor(start: number, end: number) {
     if (start > end) {
       return "192, 57, 43";
@@ -163,14 +181,13 @@ export class DiagrammComponent implements OnChanges {
     }
   }
 
-
+  
   getMonthNameFromTimestamp(timestamp: number): string {
     const date = new Date(timestamp);
-
     const options: Intl.DateTimeFormatOptions = {
-      month: 'long' // Gibt den vollständigen Namen des Monats zurück
+      month: 'long', 
+      year: '2-digit'
     };
-
     return date.toLocaleDateString('en-US', options);
   }
 

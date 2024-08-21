@@ -50,6 +50,7 @@
     }
 
     .diagramm-container {
+        position: relative;
         width: calc(100% - 40px);
         height: calc(100% - 140px);
         display: flex;
@@ -59,6 +60,11 @@
         margin-left: 20px;
         margin-right: 20px;
         gap: 20px;
+        .row {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
     }
 
     .favorite {

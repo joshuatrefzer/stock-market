@@ -9,39 +9,52 @@ export class MainService {
   favorite: StockData | undefined;
   stockTicker: WritableSignal<StockData> = signal(
     {
-      T: "TIGO",          // Symbol des Wertpapiers
-      c: 24.61,           // Schlusskurs (closing price)
-      h: 24.925,          // Höchstkurs (high price)
-      l: 24.375,          // Tiefstkurs (low price)
-      n: 1304,            // Anzahl der Transaktionen (number of trades)
-      o: 24.88,           // Eröffnungskurs (opening price)
-      t: 1722542400000,   // Zeitstempel (timestamp in Unix time)
-      v: 83557,           // Handelsvolumen (volume)
-      vw: 24.6321         // Durchschnittlicher Preis (volume-weighted average price)
+      T: "TIGO",          
+      c: 24.61,          
+      h: 24.925,          
+      l: 24.375,          
+      n: 1304,            
+      o: 24.88,          
+      t: 1722542400000,   
+      v: 83557,           
+      vw: 24.6321         
     }
   );
 
   stockDataTimeInterval: StockData[] | undefined;
   compairison: boolean = false;
-  
   stockToCompare: WritableSignal<StockData | undefined> = signal(undefined);
   stockDataTimeIntervalForCompairison: StockData[] | undefined;
-
-
-
+  errorMessage: string | undefined;
 
   constructor() {
     this.checkForFavorite();
   }
 
+  /**
+   * checks for favorite stock in local storage, after page reload this stock is shown in dashboard
+   */
   checkForFavorite() {
     const storageData = localStorage.getItem('stockTicker');
     if (storageData) {
       this.stockTicker.set(JSON.parse(storageData))
       this.favorite = this.stockTicker();
-      
     } else {
       this.favorite = undefined;
+    }
+  }
+
+  /**
+   * avoids loading the same two stocks into dashboard for compairison
+   * @returns {boolean} 
+   */
+  isSameStock(){
+    if (this.stockTicker().T == this.stockToCompare()?.T) {
+      this.stockToCompare.set(undefined);
+      this.errorMessage = "please select two different stocks";
+      return true;
+    } else {
+      return false;
     }
   }
 

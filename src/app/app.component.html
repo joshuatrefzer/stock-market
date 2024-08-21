@@ -1,14 +1,13 @@
 <div class="wrapper">
-  <!-- <div class="top-area">
-
-  </div> -->
-
 
   <div class="main-area">
     <app-stock-list></app-stock-list>
     <app-dashboard></app-dashboard>
   </div>
 
+  @if (mainService.errorMessage) {
+    <app-error-popup></app-error-popup>
+  }
 
 
 </div>

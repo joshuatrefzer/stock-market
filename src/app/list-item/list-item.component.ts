@@ -29,23 +29,17 @@ export class ListItemComponent  {
 
   constructor(private mainService:MainService){}
 
+  /**
+   * Updates dashboard- view after clicking on list-items
+   * @returns if data is invalid
+   */
   updateStock(){
     if (this.mainService.compairison && this.mainService.stockToCompare() == undefined) {
-      this.mainService.stockToCompare.set(this.data);
-      console.log('Compare with' , this.mainService.stockToCompare());
-      
+    this.mainService.stockToCompare.set(this.data); 
+    if (this.mainService.isSameStock()) return;
     } else {
-      if (this.mainService.stockDataTimeInterval) {
-        this.mainService.stockDataTimeInterval = undefined;
-      }
-      if (this.data) {
-        this.mainService.stockTicker.set(this.data);
-      }
+      if (this.mainService.stockDataTimeInterval) this.mainService.stockDataTimeInterval = undefined;
+      if (this.data) this.mainService.stockTicker.set(this.data);
     }
-    
   }
-  
-  
-
-  
 }
